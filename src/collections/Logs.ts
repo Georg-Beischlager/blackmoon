@@ -20,10 +20,6 @@ export const Logs: CollectionConfig = {
     relationTo: 'users'
    },
    {
-    name: 'created',
-    type: 'date'
-   },
-   {
     name: 'content',
     type: 'richText'
    },

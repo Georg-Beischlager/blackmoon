@@ -161,7 +161,6 @@ export interface Log {
   id: number;
   title?: string | null;
   author?: (number | null) | User;
-  created?: string | null;
   content?: {
     root: {
       type: string;
@@ -191,6 +190,15 @@ export interface Database {
   author?: (number | null) | User;
   created?: string | null;
   content?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  links?:
     | {
         [k: string]: unknown;
       }
@@ -307,7 +315,6 @@ export interface MediaSelect<T extends boolean = true> {
 export interface LogsSelect<T extends boolean = true> {
   title?: T;
   author?: T;
-  created?: T;
   content?: T;
   content_html?: T;
   updatedAt?: T;
@@ -322,6 +329,7 @@ export interface DatabaseSelect<T extends boolean = true> {
   author?: T;
   created?: T;
   content?: T;
+  links?: T;
   updatedAt?: T;
   createdAt?: T;
 }

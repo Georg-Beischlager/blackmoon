@@ -38,6 +38,6 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
-  cors: ['http://localhost:3000', 'http://localhost:3001'],
-  csrf: ['http://localhost:3000', 'http://localhost:3001'],
+  cors: ['http://localhost:3000', 'http://localhost:3001', 'democrify.xyz'],
+  csrf: ['http://localhost:3000', 'http://localhost:3001', 'democrify.xyz'],
 })

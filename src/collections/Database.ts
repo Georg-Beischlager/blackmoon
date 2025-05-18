@@ -25,6 +25,10 @@ export const Database: CollectionConfig = {
    {
     name: 'content',
     type: 'json'
+   },
+    {
+    name: 'links',
+    type: 'json'
    }
   ],
 }
