@@ -40,6 +40,8 @@ export default buildConfig({
     // storage-adapter-placeholder
   ],
   serverURL: 'https://blackmoon-api.democrify.xyz',
-  cors: '*',
+  cors: {
+    origins: ['http://localhost:3002', 'http://localhost:3001', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz']
+  },
   csrf: ['http://localhost:3002', 'http://localhost:3001', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
 })
