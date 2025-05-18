@@ -7,6 +7,7 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+import { Tags } from './collections/Tags'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Logs } from './collections/Logs'
@@ -22,7 +23,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Logs, Database],
+  collections: [Users, Media, Tags, Logs, Database],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -38,6 +39,6 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
-  cors: ['http://localhost:3000', 'http://localhost:3001', 'democrify.xyz'],
-  csrf: ['http://localhost:3000', 'http://localhost:3001', 'democrify.xyz'],
+  cors: ['http://localhost:3002', 'http://localhost:3001', 'democrify.xyz'],
+  csrf: ['http://localhost:3002', 'http://localhost:3001', 'democrify.xyz'],
 })

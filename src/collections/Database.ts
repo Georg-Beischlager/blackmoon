@@ -1,3 +1,4 @@
+import { lexicalHTMLField } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 export const Database: CollectionConfig = {
@@ -19,16 +20,38 @@ export const Database: CollectionConfig = {
     relationTo: 'users'
    },
    {
-    name: 'created',
-    type: 'date'
+    name: 'content',
+   type: 'richText'
+   },
+    lexicalHTMLField({
+      htmlFieldName: 'content_html',
+      lexicalFieldName: 'content',
+    }),
+   {
+    name: 'related',
+    type: 'array',
+    fields: [
+      {
+        name: "to",
+        type: 'relationship',
+        relationTo: 'database'
+      },
+      {
+        name: 'alias',
+        type: 'text'
+      }
+    ]
    },
    {
-    name: 'content',
-    type: 'json'
+    name: 'tags',
+    type: 'array',
+    fields: [
+      {
+        name: 'tag',
+        type: 'relationship',
+        relationTo: 'tags',
+      }
+    ]
    },
-    {
-    name: 'links',
-    type: 'json'
-   }
   ],
 }
