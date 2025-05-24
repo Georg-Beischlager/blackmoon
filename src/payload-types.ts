@@ -189,6 +189,10 @@ export interface Log {
     [k: string]: unknown;
   } | null;
   content_html?: string | null;
+  coordinates?: {
+    row?: number | null;
+    column?: number | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -229,6 +233,10 @@ export interface Database {
         id?: string | null;
       }[]
     | null;
+  coordinates?: {
+    row?: number | null;
+    column?: number | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -352,6 +360,12 @@ export interface LogsSelect<T extends boolean = true> {
   author?: T;
   content?: T;
   content_html?: T;
+  coordinates?:
+    | T
+    | {
+        row?: T;
+        column?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -376,6 +390,12 @@ export interface DatabaseSelect<T extends boolean = true> {
     | {
         tag?: T;
         id?: T;
+      };
+  coordinates?:
+    | T
+    | {
+        row?: T;
+        column?: T;
       };
   updatedAt?: T;
   createdAt?: T;

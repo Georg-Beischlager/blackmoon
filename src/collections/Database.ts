@@ -53,5 +53,19 @@ export const Database: CollectionConfig = {
       }
     ]
    },
+     {
+      name: 'coordinates',
+      type: 'group',
+      fields: [
+        {
+          name: 'row',
+          type: 'number'
+        },
+        {
+        name: 'column',
+        type: 'number'
+        }
+      ]
+    }
   ],
 }

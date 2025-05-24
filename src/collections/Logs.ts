@@ -27,5 +27,19 @@ export const Logs: CollectionConfig = {
       htmlFieldName: 'content_html',
       lexicalFieldName: 'content',
     }),
+    {
+      name: 'coordinates',
+      type: 'group',
+      fields: [
+        {
+          name: 'row',
+          type: 'number'
+        },
+        {
+        name: 'column',
+        type: 'number'
+        }
+      ]
+    }
   ],
 }
