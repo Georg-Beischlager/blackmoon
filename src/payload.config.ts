@@ -41,7 +41,7 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
-  serverURL: 'http://localhost:3002', // 'https://blackmoon-api.democrify.xyz',
+  serverURL: 'https://blackmoon-api.democrify.xyz',
   cors: {
     origins: ['http://localhost:3002', 'http://localhost:3001', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz']
   },
