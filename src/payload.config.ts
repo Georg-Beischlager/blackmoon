@@ -12,6 +12,8 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Logs } from './collections/Logs'
 import { Database } from './collections/Database'
+import { Characters } from './collections/Characters'
+import { MapTiles } from './collections/MapTiles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -23,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Tags, Logs, Database],
+  collections: [Logs, Database, Characters, MapTiles, Tags, Media, Users ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -39,7 +41,7 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
-  serverURL: 'https://blackmoon-api.democrify.xyz',
+  serverURL: 'http://localhost:3002', // 'https://blackmoon-api.democrify.xyz',
   cors: {
     origins: ['http://localhost:3002', 'http://localhost:3001', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz']
   },

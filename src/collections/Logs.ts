@@ -10,19 +10,33 @@ export const Logs: CollectionConfig = {
     useAsTitle: 'title',
   },
   fields: [
-   {
-    name: 'title',
-    type: 'text'
-   },
-   {
-    name: 'author',
-    type: 'relationship',
-    relationTo: 'users'
-   },
-   {
-    name: 'content',
-    type: 'richText'
-   },
+    {
+      name: 'title',
+      type: 'text'
+    },
+    {
+      name: 'author',
+      type: 'relationship',
+      relationTo: 'users'
+    },
+    {
+      name: 'players',
+      type: 'array',
+      fields: [
+        {
+        name: 'player',
+        type: 'text'
+        }
+      ]
+    },
+    {
+      name: 'when',
+      type: 'date'
+    },
+    {
+      name: 'content',
+      type: 'richText'
+    },
     lexicalHTMLField({
       htmlFieldName: 'content_html',
       lexicalFieldName: 'content',
@@ -36,10 +50,19 @@ export const Logs: CollectionConfig = {
           type: 'number'
         },
         {
-        name: 'column',
-        type: 'number'
+          name: 'column',
+          type: 'number'
         }
       ]
+    },
+    {
+      name: 'sort',
+      type: 'number',
+      label: 'Sortierung (absteigend)'
+    },
+    {
+      name: 'pinned',
+      type: 'checkbox'
     }
   ],
 }

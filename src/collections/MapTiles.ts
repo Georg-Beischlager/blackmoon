@@ -1,0 +1,51 @@
+import { lexicalHTMLField } from '@payloadcms/richtext-lexical'
+import type { CollectionConfig } from 'payload'
+
+export const MapTiles: CollectionConfig = {
+  slug: 'maptiles',
+  access: {
+    read: () => true,
+  },
+  admin: {
+    useAsTitle: 'info',
+  },
+  fields: [
+    {
+      name: 'info',
+      type: 'text',
+      required: true
+    },
+    {
+      name: 'author',
+      type: 'relationship',
+      relationTo: 'users'
+    },
+    {
+      name: 'coordinates',
+      type: 'group',
+      fields: [
+        {
+          name: 'row',
+          type: 'number'
+        },
+        {
+          name: 'column',
+          type: 'number'
+        }
+      ]
+    },
+    {
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+    },
+    {
+      name: 'description',
+      type: 'richText'
+    },
+    lexicalHTMLField({
+      htmlFieldName: 'description_html',
+      lexicalFieldName: 'description',
+    }),
+  ],
+}
