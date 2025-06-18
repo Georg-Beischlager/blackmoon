@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import { headersWithCors, type CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -15,6 +15,22 @@ export const Users: CollectionConfig = {
       access: {
         read: () => true
       }
+    }
+  ],
+  endpoints: [
+    {
+      path: '/shorts',
+      method: 'get',
+      handler: async (req) => {
+        const data = await req.payload.find({
+          collection: 'users',
+          select: {
+            id: true,
+            short: true
+          }
+        })
+        return Response.json(data, { headers: headersWithCors({ headers: new Headers(), req })})
+      },
     }
   ],
 }

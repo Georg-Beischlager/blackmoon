@@ -298,6 +298,7 @@ export interface Maptile {
     row?: number | null;
     column?: number | null;
   };
+  visible?: boolean | null;
   image?: (number | null) | Media;
   description?: {
     root: {
@@ -483,6 +484,7 @@ export interface MaptilesSelect<T extends boolean = true> {
         row?: T;
         column?: T;
       };
+  visible?: T;
   image?: T;
   description?: T;
   description_html?: T;

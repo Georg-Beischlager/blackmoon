@@ -17,7 +17,6 @@ import { MapTiles } from './collections/MapTiles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -41,9 +40,9 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
-  serverURL: 'https://blackmoon-api.democrify.xyz',
+  serverURL: process.env.LOCAL === 'true' ? 'http://localhost:3002' : 'https://blackmoon-api.democrify.xyz',
   cors: {
-    origins: ['http://localhost:3002', 'http://localhost:3001', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz']
+    origins: ['http://localhost:3002', 'http://localhost:3001', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
   },
   csrf: ['http://localhost:3002', 'http://localhost:3001', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
 })

@@ -35,6 +35,10 @@ export const MapTiles: CollectionConfig = {
       ]
     },
     {
+      name: 'visible',
+      type: 'checkbox'
+    },
+    {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
