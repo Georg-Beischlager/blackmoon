@@ -20,6 +20,10 @@ export const Logs: CollectionConfig = {
       relationTo: 'users'
     },
     {
+      name: 'gms',
+      type: 'text'
+    },
+    {
       name: 'players',
       type: 'array',
       fields: [
