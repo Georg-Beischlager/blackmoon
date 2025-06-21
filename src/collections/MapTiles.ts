@@ -44,6 +44,20 @@ export const MapTiles: CollectionConfig = {
       relationTo: 'media',
     },
     {
+      name: 'icons',
+      type: 'text',
+      maxLength: 3
+    },
+    {
+      name: 'color',
+      type: 'select',
+      options: [
+        { label: 'Gelb', value: 'yellow' },
+        { label: 'Rot', value: 'red' },
+        { label: 'Weiß', value: 'white' },
+      ],
+    },
+    {
       name: 'description',
       type: 'richText'
     },

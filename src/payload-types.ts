@@ -301,6 +301,8 @@ export interface Maptile {
   };
   visible?: boolean | null;
   image?: (number | null) | Media;
+  icons?: string | null;
+  color?: ('yellow' | 'red' | 'white') | null;
   description?: {
     root: {
       type: string;
@@ -488,6 +490,8 @@ export interface MaptilesSelect<T extends boolean = true> {
       };
   visible?: T;
   image?: T;
+  icons?: T;
+  color?: T;
   description?: T;
   description_html?: T;
   updatedAt?: T;
