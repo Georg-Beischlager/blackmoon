@@ -5,6 +5,11 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
+import { Tags } from './collections/Tags'
+import { Logs } from './collections/Logs'
+import { Database } from './collections/Database'
+import { Characters } from './collections/Characters'
+import { MapTiles } from './collections/MapTiles'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 
@@ -18,7 +23,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Logs, Database, Characters, MapTiles, Tags, Users, Media],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -31,4 +36,9 @@ export default buildConfig({
   }),
   sharp,
   plugins: [],
+  serverURL: 'http://localhost:3002',
+  cors: {
+    origins: ['http://localhost:3002', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
+  },
+  csrf: ['http://localhost:3002','https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
 })

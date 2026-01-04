@@ -67,6 +67,11 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    logs: Log;
+    database: Database;
+    characters: Character;
+    maptiles: Maptile;
+    tags: Tag;
     users: User;
     media: Media;
     'payload-kv': PayloadKv;
@@ -76,6 +81,11 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    logs: LogsSelect<false> | LogsSelect<true>;
+    database: DatabaseSelect<false> | DatabaseSelect<true>;
+    characters: CharactersSelect<false> | CharactersSelect<true>;
+    maptiles: MaptilesSelect<false> | MaptilesSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -84,7 +94,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
   globals: {};
@@ -118,10 +128,52 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "logs".
+ */
+export interface Log {
+  id: number;
+  title?: string | null;
+  author?: (number | null) | User;
+  gms?: string | null;
+  players?:
+    | {
+        player?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  when?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  content_html?: string | null;
+  coordinates?: {
+    row?: number | null;
+    column?: number | null;
+  };
+  sort?: number | null;
+  pinned?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
+  short?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -142,10 +194,96 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "database".
+ */
+export interface Database {
+  id: number;
+  title?: string | null;
+  author?: (number | null) | User;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  content_html?: string | null;
+  related?:
+    | {
+        to?: (number | null) | Database;
+        alias?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  tags?:
+    | {
+        tag?: (number | null) | Tag;
+        id?: string | null;
+      }[]
+    | null;
+  coordinates?: {
+    row?: number | null;
+    column?: number | null;
+  };
+  sort?: number | null;
+  pinned?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  tag?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "characters".
+ */
+export interface Character {
+  id: number;
+  name: string;
+  'player(s)'?: string | null;
+  partOfCrew?: boolean | null;
+  image?: (number | null) | Media;
+  biography?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  biography_html?: string | null;
+  sort?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -161,10 +299,45 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "maptiles".
+ */
+export interface Maptile {
+  id: number;
+  info: string;
+  author?: (number | null) | User;
+  coordinates?: {
+    row?: number | null;
+    column?: number | null;
+  };
+  visible?: boolean | null;
+  image?: (number | null) | Media;
+  icons?: string | null;
+  color?: ('yellow' | 'red' | 'white') | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  description_html?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -181,20 +354,40 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
+        relationTo: 'logs';
+        value: number | Log;
+      } | null)
+    | ({
+        relationTo: 'database';
+        value: number | Database;
+      } | null)
+    | ({
+        relationTo: 'characters';
+        value: number | Character;
+      } | null)
+    | ({
+        relationTo: 'maptiles';
+        value: number | Maptile;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: number | Tag;
+      } | null)
+    | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -204,10 +397,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -227,7 +420,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -235,9 +428,117 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "logs_select".
+ */
+export interface LogsSelect<T extends boolean = true> {
+  title?: T;
+  author?: T;
+  gms?: T;
+  players?:
+    | T
+    | {
+        player?: T;
+        id?: T;
+      };
+  when?: T;
+  content?: T;
+  content_html?: T;
+  coordinates?:
+    | T
+    | {
+        row?: T;
+        column?: T;
+      };
+  sort?: T;
+  pinned?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "database_select".
+ */
+export interface DatabaseSelect<T extends boolean = true> {
+  title?: T;
+  author?: T;
+  content?: T;
+  content_html?: T;
+  related?:
+    | T
+    | {
+        to?: T;
+        alias?: T;
+        id?: T;
+      };
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  coordinates?:
+    | T
+    | {
+        row?: T;
+        column?: T;
+      };
+  sort?: T;
+  pinned?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "characters_select".
+ */
+export interface CharactersSelect<T extends boolean = true> {
+  name?: T;
+  'player(s)'?: T;
+  partOfCrew?: T;
+  image?: T;
+  biography?: T;
+  biography_html?: T;
+  sort?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "maptiles_select".
+ */
+export interface MaptilesSelect<T extends boolean = true> {
+  info?: T;
+  author?: T;
+  coordinates?:
+    | T
+    | {
+        row?: T;
+        column?: T;
+      };
+  visible?: T;
+  image?: T;
+  icons?: T;
+  color?: T;
+  description?: T;
+  description_html?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  tag?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  short?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
