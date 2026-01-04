@@ -36,7 +36,7 @@ export default buildConfig({
   }),
   sharp,
   plugins: [],
-  serverURL: 'http://localhost:3002',
+  serverURL: process.env.LOCAL === 'true' ? 'http://localhost:3002' : 'https://blackmoon-api.democrify.xyz',
   cors: {
     origins: ['http://localhost:3002', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
   },
