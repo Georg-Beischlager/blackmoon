@@ -22,13 +22,16 @@ RUN adduser --system --uid 1001 nextjs
 # Create upload directories
 RUN mkdir -p media hex-images data && chown -R nextjs:nodejs media hex-images data
 
+# Enable corepack as root before switching users
+RUN corepack enable pnpm
+
 # Copy everything from deps
 COPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules
 COPY --chown=nextjs:nodejs . .
 
 # Build the application as nextjs user
 USER nextjs
-RUN corepack enable pnpm && pnpm build
+RUN pnpm build
 
 EXPOSE 3002
 ENV PORT=3002
