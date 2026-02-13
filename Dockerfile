@@ -1,6 +1,5 @@
 # To use this Dockerfile, you have to set `output: 'standalone'` in your next.config.mjs file.
 # From https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
-
 FROM node:22.17.0-alpine AS base
 
 # Install dependencies only when needed
@@ -17,7 +16,6 @@ RUN \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
   else echo "Lockfile not found." && exit 1; \
   fi
-
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -48,6 +46,9 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+# Create upload directories with correct permissions for Payload CMS
+RUN mkdir -p media hex-images && chown -R nextjs:nodejs media hex-images
+
 # Remove this line if you do not have this folder
 COPY --from=builder /app/public ./public
 
@@ -62,9 +63,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
-EXPOSE 3000
-
-ENV PORT 3000
+EXPOSE 3002
+ENV PORT=3002
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output

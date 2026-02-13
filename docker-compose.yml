@@ -1,27 +1,19 @@
-version: '3.8'
-
 services:
   app:
-    image: node:18-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - '3002:3002'
     volumes:
-      - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
-      # Persist SQLite database
-      - ./data/blackmoon-db.db:/home/node/app/data/blackmoon-db.db
-      # Persist upload directories
-      - ./media:/home/node/app/media
-      - ./hex-images:/home/node/app/hex-images
-    working_dir: /home/node/app
-    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm build && pnpm start"
+      # Persist SQLite database (mount entire data directory)
+      - ./data:/app/data
+      # Persist upload directories  
+      - ./media:/app/media
+      - ./hex-images:/app/hex-images
     environment:
       - NODE_ENV=production
       - PORT=3002
     env_file:
       - .env
     restart: unless-stopped
-
-volumes:
-  node_modules:
-
