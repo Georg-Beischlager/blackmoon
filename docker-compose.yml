@@ -1,43 +1,27 @@
-version: '3'
+version: '3.8'
 
 services:
-  payload:
+  app:
     image: node:18-alpine
     ports:
-      - '3000:3000'
+      - '3002:3002'
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
-    working_dir: /home/node/app/
-    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
-    depends_on:
-      - mongo
-      # - postgres
+      # Persist SQLite database
+      - ./data/blackmoon-db.db:/home/node/app/data/blackmoon-db.db
+      # Persist upload directories
+      - ./media:/home/node/app/media
+      - ./hex-images:/home/node/app/hex-images
+    working_dir: /home/node/app
+    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm build && pnpm start"
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
     env_file:
       - .env
-
-  # Ensure your DATABASE_URL uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
-  mongo:
-    image: mongo:latest
-    ports:
-      - '27017:27017'
-    command:
-      - --storageEngine=wiredTiger
-    volumes:
-      - data:/data/db
-    logging:
-      driver: none
-
-  # Uncomment the following to use postgres
-  # postgres:
-  #   restart: always
-  #   image: postgres:latest
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
+    restart: unless-stopped
 
 volumes:
-  data:
-  # pgdata:
   node_modules:
+
