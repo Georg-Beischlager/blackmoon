@@ -12,6 +12,8 @@ import { Characters } from './collections/Characters'
 import { MapTiles } from './collections/MapTiles'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { HexImages } from './collections/HexImages'
+
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -23,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Logs, Database, Characters, MapTiles, Tags, Users, Media],
+  collections: [Logs, Database, Characters, MapTiles, HexImages, Tags, Users, Media],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -38,7 +40,7 @@ export default buildConfig({
   plugins: [],
   serverURL: process.env.LOCAL === 'true' ? 'http://localhost:3002' : 'https://blackmoon-api.democrify.xyz',
   cors: {
-    origins: ['http://localhost:3002', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
+    origins: ['http://localhost:3001','http://localhost:3002', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
   },
-  csrf: ['http://localhost:3002','https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
+  csrf: ['http://localhost:3001','http://localhost:3002','https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
 })

@@ -71,6 +71,7 @@ export interface Config {
     database: Database;
     characters: Character;
     maptiles: Maptile;
+    hexImages: HexImage;
     tags: Tag;
     users: User;
     media: Media;
@@ -85,6 +86,7 @@ export interface Config {
     database: DatabaseSelect<false> | DatabaseSelect<true>;
     characters: CharactersSelect<false> | CharactersSelect<true>;
     maptiles: MaptilesSelect<false> | MaptilesSelect<true>;
+    hexImages: HexImagesSelect<false> | HexImagesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -333,6 +335,37 @@ export interface Maptile {
   createdAt: string;
 }
 /**
+ * All images uploaded here are automatically transformed into hexagons
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hexImages".
+ */
+export interface HexImage {
+  id: number;
+  /**
+   * Status of the hex transformation
+   */
+  transformStatus?: ('pending' | 'processing' | 'success' | 'failed') | null;
+  /**
+   * Error message if transformation failed
+   */
+  transformError?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  /**
+   * Filename of the hex-transformed image
+   */
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -371,6 +404,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'maptiles';
         value: number | Maptile;
+      } | null)
+    | ({
+        relationTo: 'hexImages';
+        value: number | HexImage;
       } | null)
     | ({
         relationTo: 'tags';
@@ -523,6 +560,25 @@ export interface MaptilesSelect<T extends boolean = true> {
   description_html?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hexImages_select".
+ */
+export interface HexImagesSelect<T extends boolean = true> {
+  transformStatus?: T;
+  transformError?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
