@@ -13,12 +13,12 @@ export const MapTiles: CollectionConfig = {
     {
       name: 'info',
       type: 'text',
-      required: true
+      required: true,
     },
     {
       name: 'author',
       type: 'relationship',
-      relationTo: 'users'
+      relationTo: 'users',
     },
     {
       name: 'coordinates',
@@ -26,28 +26,28 @@ export const MapTiles: CollectionConfig = {
       fields: [
         {
           name: 'row',
-          type: 'number'
+          type: 'number',
         },
         {
           name: 'column',
-          type: 'number'
-        }
-      ]
+          type: 'number',
+        },
+      ],
     },
     {
       name: 'visible',
-      type: 'checkbox'
+      type: 'checkbox',
     },
     {
       name: 'image',
       type: 'relationship',
-      relationTo: ['media', 'hexImages'], // Polymorphic - can be either!
+      relationTo: 'hexImages',
       required: false,
     },
     {
       name: 'icons',
       type: 'text',
-      maxLength: 3
+      maxLength: 3,
     },
     {
       name: 'color',
@@ -60,7 +60,7 @@ export const MapTiles: CollectionConfig = {
     },
     {
       name: 'description',
-      type: 'richText'
+      type: 'richText',
     },
     lexicalHTMLField({
       htmlFieldName: 'description_html',

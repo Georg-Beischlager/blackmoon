@@ -287,9 +287,13 @@ export interface Media {
   id: number;
   alt: string;
   /**
-   * Transform this image into a hexagon shape
+   * Transform this image into a hexagon shape (creates separate file)
    */
   isHexImage?: boolean | null;
+  /**
+   * Filename of the hex-transformed version
+   */
+  hexFilename?: string | null;
   transformStatus?: ('none' | 'success' | 'failed') | null;
   transformError?: string | null;
   updatedAt: string;
@@ -618,6 +622,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   isHexImage?: T;
+  hexFilename?: T;
   transformStatus?: T;
   transformError?: T;
   updatedAt?: T;
