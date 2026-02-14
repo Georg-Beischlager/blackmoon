@@ -102,9 +102,7 @@ export interface Config {
   globals: {};
   globalsSelect: {};
   locale: null;
-  user: User & {
-    collection: 'users';
-  };
+  user: User;
   jobs: {
     tasks: unknown;
     workflows: unknown;
@@ -193,6 +191,7 @@ export interface User {
       }[]
     | null;
   password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -312,7 +311,15 @@ export interface Maptile {
     column?: number | null;
   };
   visible?: boolean | null;
-  image?: (number | null) | Media;
+  image?:
+    | ({
+        relationTo: 'media';
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'hexImages';
+        value: number | HexImage;
+      } | null);
   icons?: string | null;
   color?: ('yellow' | 'red' | 'white') | null;
   description?: {
