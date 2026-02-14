@@ -2,19 +2,28 @@ import sharp from 'sharp'
 
 /**
  * Transform an image buffer into a hexagon shape with transparent corners
- * Output is resized to 150x150 pixels
+ * Image is first resized to fit within 150x150, then hexagon mask is applied
  * @param inputBuffer - The input image buffer (any format sharp supports)
- * @returns A PNG buffer with hexagon mask applied and resized to 150x150
+ * @returns A PNG buffer with hexagon mask applied at 150x150
  */
 export async function hexTransformBuffer(inputBuffer: Buffer): Promise<Buffer> {
   console.log('[hexTransform] Starting transformation, input size:', inputBuffer.length)
 
-  // Load image and get metadata
-  const image = sharp(inputBuffer)
-  const metadata = await image.metadata()
-  console.log('[hexTransform] Image metadata:', metadata)
+  // First, resize the image to 150x150
+  console.log('[hexTransform] Resizing to 150x150...')
+  const resized = await sharp(inputBuffer)
+    .resize(150, 150, {
+      fit: 'cover', // Cover the entire area (crop if needed)
+      position: 'center',
+    })
+    .toBuffer()
 
-  const { width = 0, height = 0 } = metadata
+  // Load resized image and get metadata
+  const image = sharp(resized)
+  const metadata = await image.metadata()
+  console.log('[hexTransform] Resized metadata:', metadata)
+
+  const { width = 150, height = 150 } = metadata
 
   // Use the smaller dimension as the size for our square crop
   const size = Math.min(width, height)
@@ -78,8 +87,8 @@ export async function hexTransformBuffer(inputBuffer: Buffer): Promise<Buffer> {
 
   console.log('[hexTransform] Pixels made transparent:', transparentCount)
 
-  // Convert back to PNG and resize to 150x150
-  console.log('[hexTransform] Converting back to PNG and resizing to 150x150...')
+  // Convert back to PNG (already at 150x150)
+  console.log('[hexTransform] Converting back to PNG...')
   const outputBuffer = await sharp(data, {
     raw: {
       width: info.width,
@@ -87,10 +96,6 @@ export async function hexTransformBuffer(inputBuffer: Buffer): Promise<Buffer> {
       channels: 4,
     },
   })
-    .resize(150, 150, {
-      fit: 'contain',
-      background: { r: 0, g: 0, b: 0, alpha: 0 }, // Transparent background
-    })
     .png()
     .toBuffer()
 
