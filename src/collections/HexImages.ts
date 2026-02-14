@@ -11,7 +11,6 @@ export const HexImages: CollectionConfig = {
   upload: {
     staticDir: 'hex-images',
     mimeTypes: ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'],
-    // Disable image size variants since we're applying custom transformation
     disableLocalStorage: false,
   },
   fields: [
@@ -51,26 +50,18 @@ export const HexImages: CollectionConfig = {
   hooks: {
     afterChange: [
       async ({ doc, req, operation }) => {
-        // Ensure doc exists
-        if (!doc) {
-          return doc
-        }
-
         // Only process on create with a file upload
         if (operation !== 'create' || !req.file || !doc.filename) {
-          console.log('Skipping transformation - not a create operation or no file')
           return doc
         }
 
         console.log('Starting hex transformation in afterChange...')
         console.log('Saved file:', doc.filename)
-        console.log('Document ID:', doc.id, 'Type:', typeof doc.id)
 
         try {
           const fs = await import('fs/promises')
           const path = await import('path')
           
-          // Get the upload directory
           const uploadsDir = 'hex-images'
           const filePath = path.join(uploadsDir, doc.filename)
           
@@ -85,7 +76,7 @@ export const HexImages: CollectionConfig = {
           const transformedBuffer = await hexTransformBuffer(fileBuffer)
           console.log('Transformation complete, output size:', transformedBuffer.length)
 
-          // Validate that the output is a valid PNG
+          // Validate PNG
           const pngMagicNumber = Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A])
           if (!transformedBuffer.subarray(0, 8).equals(pngMagicNumber)) {
             throw new Error('Transformation did not produce valid PNG')
@@ -105,28 +96,20 @@ export const HexImages: CollectionConfig = {
           await fs.unlink(filePath)
           console.log('Deleted original file:', filePath)
 
-          // Update the document with the new filename
-          // IMPORTANT: PostgreSQL IDs are numbers, but the API expects strings
-          console.log('Updating document with ID:', String(doc.id))
-          const updatedDoc = await req.payload.update({
-            collection: 'hexImages',
-            id: String(doc.id), // Convert to string
-            data: {
-              filename: newFilename,
-              mimeType: 'image/png',
-              filesize: transformedBuffer.length,
-              transformStatus: 'success',
-              transformError: '',
-            },
-          })
+          // IMPORTANT: Don't call payload.update() - just modify doc and return it
+          // The afterChange hook's return value becomes the final saved document
+          doc.filename = newFilename
+          doc.mimeType = 'image/png'
+          doc.filesize = transformedBuffer.length
+          doc.transformStatus = 'success'
+          doc.transformError = ''
 
-          console.log('✅ Hex transformation successful! Updated doc:', updatedDoc.filename)
+          console.log('✅ Hex transformation successful! New filename:', newFilename)
           req.payload.logger.info({ message: `Successfully transformed hex image: ${newFilename}` })
 
-          return updatedDoc
+          return doc
 
         } catch (error: any) {
-          // Log the full error for debugging
           console.error('Hex transformation error:', error)
           req.payload.logger.error({
             message: 'Hex transformation error',
@@ -134,21 +117,10 @@ export const HexImages: CollectionConfig = {
             stack: error.stack,
           })
 
-          // Update document with error
-          try {
-            await req.payload.update({
-              collection: 'hexImages',
-              id: String(doc.id), // Convert to string
-              data: {
-                transformStatus: 'failed',
-                transformError: `Error: ${error.message}`,
-              },
-            })
-          } catch (updateError) {
-            console.error('Failed to update error status:', updateError)
-          }
+          // Mark as failed and return
+          doc.transformStatus = 'failed'
+          doc.transformError = `Error: ${error.message}`
 
-          // Don't throw - let the upload succeed but mark as failed
           return doc
         }
       },
