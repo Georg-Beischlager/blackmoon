@@ -40,8 +40,9 @@ export const MapTiles: CollectionConfig = {
     },
     {
       name: 'image',
-      type: 'upload',
-      relationTo: 'hexImages',
+      type: 'relationship',
+      relationTo: ['media', 'hexImages'], // Polymorphic - can be either!
+      required: false,
     },
     {
       name: 'icons',
