@@ -41,7 +41,7 @@ export const MapTiles: CollectionConfig = {
     {
       name: 'image',
       type: 'upload',
-      relationTo: 'media',
+      relationTo: 'hexImages',
     },
     {
       name: 'icons',
