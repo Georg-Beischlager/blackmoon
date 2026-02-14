@@ -76,9 +76,9 @@ export const Media: CollectionConfig = {
           data.transformError = ''
 
           return data
-        } catch (error: any) {
+        } catch (error) {
           data.transformStatus = 'failed'
-          data.transformError = error.message
+          data.transformError = error instanceof Error ? error.message : 'Unknown error'
           return data
         }
       },

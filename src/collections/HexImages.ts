@@ -63,13 +63,13 @@ export const HexImages: CollectionConfig = {
         // Sync transformStatus from the related Media document
         if (doc.media) {
           try {
-            const mediaDoc = await req.payload.findByID({
+            const mediaDoc = (await req.payload.findByID({
               collection: 'media',
-              id: typeof doc.media === 'string' ? doc.media : doc.media.id,
+              id: typeof doc.media === 'string' ? doc.media : (doc.media as any).id,
               depth: 0,
-            })
-            doc.transformStatus = mediaDoc.transformStatus || 'pending'
-          } catch (e) {
+            })) as any
+            doc.transformStatus = mediaDoc?.transformStatus || 'pending'
+          } catch (_e) {
             doc.transformStatus = 'failed'
           }
         }
