@@ -113,8 +113,7 @@ export const HexImages: CollectionConfig = {
             }
 
             // Generate new filename
-            const baseName = doc.filename.replace(/\.(jpe?g|png|gif|webp)$/i, '')
-            const newFilename = `${baseName}_hex.png`
+            const newFilename = `${doc.id}_hex.png`
             const newFilePath = path.join(uploadsDir, newFilename)
 
             // Write the transformed file
