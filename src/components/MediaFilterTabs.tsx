@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { Button } from '@payloadcms/ui'
 
-export const MediaFilterTabs: React.FC = () => {
+const MediaFilterTabs: React.FC = () => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -76,3 +76,5 @@ export const MediaFilterTabs: React.FC = () => {
     </div>
   )
 }
+
+export default MediaFilterTabs
