@@ -286,6 +286,12 @@ export interface Character {
 export interface Media {
   id: number;
   alt: string;
+  /**
+   * Transform this image into a hexagon shape
+   */
+  isHexImage?: boolean | null;
+  transformStatus?: ('none' | 'success' | 'failed') | null;
+  transformError?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -342,7 +348,7 @@ export interface Maptile {
   createdAt: string;
 }
 /**
- * All images uploaded here are automatically transformed into hexagons
+ * Hexagon-transformed images from the Media library
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hexImages".
@@ -350,27 +356,20 @@ export interface Maptile {
 export interface HexImage {
   id: number;
   /**
-   * Status of the hex transformation
+   * Display name for this hex image
    */
-  transformStatus?: ('pending' | 'processing' | 'success' | 'failed') | null;
+  title: string;
+  description?: string | null;
   /**
-   * Error message if transformation failed
+   * Select a Media file marked as Hex Image
    */
-  transformError?: string | null;
+  media: number | Media;
+  /**
+   * Status from the associated Media file
+   */
+  transformStatus?: ('pending' | 'success' | 'failed') | null;
   updatedAt: string;
   createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  /**
-   * Filename of the hex-transformed image
-   */
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -573,19 +572,12 @@ export interface MaptilesSelect<T extends boolean = true> {
  * via the `definition` "hexImages_select".
  */
 export interface HexImagesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  media?: T;
   transformStatus?: T;
-  transformError?: T;
   updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -625,6 +617,9 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  isHexImage?: T;
+  transformStatus?: T;
+  transformError?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
