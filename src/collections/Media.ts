@@ -57,6 +57,11 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: true,
+  admin: {
+    components: {
+      beforeList: ['/components/MediaFilterTabs'],
+    },
+  },
   hooks: {
     beforeChange: [
       async ({ req, data, operation, originalDoc }) => {
