@@ -1,25 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { hexTransformBuffer } from '../utils/hexTransformCanvas'
 
-// Custom error classes for better error handling
-class HexTransformError extends Error {
-  constructor(message: string, public code: string, public statusCode: number = 500) {
-    super(message)
-    this.name = 'HexTransformError'
-  }
-}
-
-class InvalidImageError extends HexTransformError {
-  constructor(message?: string) {
-    super(message || 'Invalid image file or unsupported format', 'INVALID_IMAGE', 400)
-  }
-}
-
-class TransformationError extends HexTransformError {
-  constructor(originalError: Error) {
-    super(`Image transformation failed: ${originalError.message}`, 'TRANSFORMATION_FAILED', 500)
-  }
-}
 
 export const HexImages: CollectionConfig = {
   slug: 'hexImages',
@@ -83,6 +64,7 @@ export const HexImages: CollectionConfig = {
 
         console.log('Starting hex transformation in afterChange...')
         console.log('Saved file:', doc.filename)
+        console.log('Document ID:', doc.id, 'Type:', typeof doc.id)
 
         try {
           const fs = await import('fs/promises')
@@ -124,17 +106,17 @@ export const HexImages: CollectionConfig = {
           console.log('Deleted original file:', filePath)
 
           // Update the document with the new filename
+          // IMPORTANT: PostgreSQL IDs are numbers, but the API expects strings
+          console.log('Updating document with ID:', String(doc.id))
           const updatedDoc = await req.payload.update({
             collection: 'hexImages',
-            id: doc.id,
+            id: String(doc.id), // Convert to string
             data: {
               filename: newFilename,
               mimeType: 'image/png',
               filesize: transformedBuffer.length,
-              width: null,
-              height: null,
               transformStatus: 'success',
-              transformError: null,
+              transformError: '',
             },
           })
 
@@ -156,7 +138,7 @@ export const HexImages: CollectionConfig = {
           try {
             await req.payload.update({
               collection: 'hexImages',
-              id: doc.id,
+              id: String(doc.id), // Convert to string
               data: {
                 transformStatus: 'failed',
                 transformError: `Error: ${error.message}`,

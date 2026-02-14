@@ -1,6 +1,5 @@
 import { lexicalHTMLField } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
-import { number } from 'payload/shared'
 
 export const Database: CollectionConfig = {
   slug: 'database',
