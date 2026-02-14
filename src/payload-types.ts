@@ -321,15 +321,7 @@ export interface Maptile {
     column?: number | null;
   };
   visible?: boolean | null;
-  image?:
-    | ({
-        relationTo: 'media';
-        value: number | Media;
-      } | null)
-    | ({
-        relationTo: 'hexImages';
-        value: number | HexImage;
-      } | null);
+  image?: (number | null) | HexImage;
   icons?: string | null;
   color?: ('yellow' | 'red' | 'white') | null;
   description?: {
