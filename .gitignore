@@ -54,3 +54,4 @@ node_modules/
 *.sqlite
 /hex-images
 /migration
+/.pnpm-store

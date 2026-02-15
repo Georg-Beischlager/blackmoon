@@ -4,6 +4,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { migrations } from './migrations'
 
 import { Tags } from './collections/Tags'
 import { Logs } from './collections/Logs'
@@ -37,6 +38,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL,
     },
+    prodMigrations: migrations,
   }),
   sharp,
   plugins: [],
