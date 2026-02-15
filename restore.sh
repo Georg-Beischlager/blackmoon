@@ -100,6 +100,12 @@ docker compose exec -T postgres psql -U blackmoon -d blackmoon < "$TEMP_DIR/blac
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Database restored successfully${NC}"
+    
+    # Reset migration tracking after restore (since we're using virtual fields)
+    echo ""
+    echo "🔄 Resetting migration tracking..."
+    docker compose exec postgres psql -U blackmoon -d blackmoon -c "TRUNCATE TABLE payload_migrations;" 2>/dev/null || echo "  No migrations table yet (will be created on startup)"
+    echo -e "${GREEN}✅ Migration tracking reset${NC}"
 else
     echo -e "${RED}❌ Database restore failed${NC}"
     rm -rf "$TEMP_DIR"

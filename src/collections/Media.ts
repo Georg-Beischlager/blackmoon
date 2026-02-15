@@ -69,7 +69,6 @@ export const Media: CollectionConfig = {
             if (!siblingData.isHexImage || !siblingData.hexFilename) {
               return null
             }
-            // Build the hex image URL using Payload config serverURL
             const baseUrl = req.payload.config.serverURL || ''
             return `${baseUrl}/api/media/file/${siblingData.hexFilename}`
           },
