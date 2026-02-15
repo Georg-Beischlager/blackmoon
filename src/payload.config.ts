@@ -37,6 +37,9 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL,
+      max: 10,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 10000,
     },
     prodMigrations: migrations,
   }),
@@ -44,7 +47,17 @@ export default buildConfig({
   plugins: [],
   serverURL: isDev ? 'http://localhost:3002' : 'https://blackmoon-api.democrify.xyz',
   cors: {
-    origins: ['http://localhost:3001','http://localhost:3002', 'https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
+    origins: [
+      'http://localhost:3001',
+      'http://localhost:3002',
+      'https://blackmoon.democrify.xyz',
+      'https://blackmoon-api.democrify.xyz',
+    ],
   },
-  csrf: ['http://localhost:3001','http://localhost:3002','https://blackmoon.democrify.xyz', 'https://blackmoon-api.democrify.xyz'],
+  csrf: [
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'https://blackmoon.democrify.xyz',
+    'https://blackmoon-api.democrify.xyz',
+  ],
 })
