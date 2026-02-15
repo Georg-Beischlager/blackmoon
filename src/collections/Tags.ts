@@ -1,4 +1,3 @@
-import { lexicalHTMLField } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 export const Tags: CollectionConfig = {
