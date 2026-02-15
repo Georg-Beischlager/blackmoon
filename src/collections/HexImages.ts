@@ -55,6 +55,41 @@ export const HexImages: CollectionConfig = {
         description: 'Status from the associated Media file',
       },
     },
+    {
+      name: 'hexUrl',
+      type: 'text',
+      virtual: true,
+      admin: {
+        readOnly: true,
+        description: 'URL to access the hex-transformed image',
+      },
+      hooks: {
+        afterRead: [
+          async ({ siblingData, req }) => {
+            if (!siblingData.media) {
+              return null
+            }
+            try {
+              const mediaId =
+                typeof siblingData.media === 'string' ? siblingData.media : siblingData.media.id
+              const mediaDoc = (await req.payload.findByID({
+                collection: 'media',
+                id: mediaId,
+                depth: 0,
+              })) as any
+
+              if (mediaDoc?.hexFilename) {
+                const baseUrl = req.payload.config.serverURL || ''
+                return `${baseUrl}/api/media/file/${mediaDoc.hexFilename}`
+              }
+              return null
+            } catch (_error) {
+              return null
+            }
+          },
+        ],
+      },
+    },
   ],
 
   hooks: {

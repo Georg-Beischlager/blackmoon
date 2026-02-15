@@ -296,6 +296,10 @@ export interface Media {
   hexFilename?: string | null;
   transformStatus?: ('none' | 'success' | 'failed') | null;
   transformError?: string | null;
+  /**
+   * URL to access the hex-transformed image
+   */
+  hexUrl?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -364,6 +368,10 @@ export interface HexImage {
    * Status from the associated Media file
    */
   transformStatus?: ('pending' | 'success' | 'failed') | null;
+  /**
+   * URL to access the hex-transformed image
+   */
+  hexUrl?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -572,6 +580,7 @@ export interface HexImagesSelect<T extends boolean = true> {
   description?: T;
   media?: T;
   transformStatus?: T;
+  hexUrl?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -617,6 +626,7 @@ export interface MediaSelect<T extends boolean = true> {
   hexFilename?: T;
   transformStatus?: T;
   transformError?: T;
+  hexUrl?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

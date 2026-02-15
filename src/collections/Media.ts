@@ -43,8 +43,7 @@ export const Media: CollectionConfig = {
       ],
       defaultValue: 'none',
       admin: {
-        readOnly: true,
-        condition: (data) => data?.isHexImage === true,
+        hidden: true,
       },
     },
     {
@@ -53,6 +52,28 @@ export const Media: CollectionConfig = {
       admin: {
         readOnly: true,
         condition: (data) => data?.transformStatus === 'failed',
+      },
+    },
+    {
+      name: 'hexUrl',
+      type: 'text',
+      virtual: true,
+      admin: {
+        readOnly: true,
+        description: 'URL to access the hex-transformed image',
+        condition: (data) => data?.isHexImage === true && data?.hexFilename,
+      },
+      hooks: {
+        afterRead: [
+          async ({ siblingData, req }) => {
+            if (!siblingData.isHexImage || !siblingData.hexFilename) {
+              return null
+            }
+            // Build the hex image URL using Payload config serverURL
+            const baseUrl = req.payload.config.serverURL || ''
+            return `${baseUrl}/api/media/file/${siblingData.hexFilename}`
+          },
+        ],
       },
     },
   ],
